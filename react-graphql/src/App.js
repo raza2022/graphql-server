@@ -7,7 +7,8 @@ import Courses from './Courses'
 
 import ApolloClient from "apollo-boost";
 const client = new ApolloClient({
-    uri: "http://192.168.100.19:5000/graphql"
+    // uri: "http://192.168.100.19:5000/graphql"
+    uri: "/graphql"
 });
 
 class App extends Component {

@@ -1,6 +1,7 @@
 const express = require('express');
 const expressGraphQL = require('express-graphql');
 const cors = require('cors');
+const path = require('path');
 
 let { buildSchema } = require('graphql');
 
@@ -60,7 +61,11 @@ let getCourse = (args) => {
 
 let getCourses = (args) => {
     let { topic } = args;
-    return coursesData.filter((course) => course.filter === topic)
+    if(topic){
+        return coursesData.filter((course) => course.topic === topic)
+    }
+    return coursesData;
+
 };
 
 let getAllCourses = () => {
@@ -111,6 +116,8 @@ app.use('/graphql', (req,res,next)=>{
     rootValue,
     graphiql: true
 }))
+
+app.use(express.static(path.join(__dirname, 'react-graphql/build')));
 
 app.listen(5000, () => {
     console.log('server running on port 5000/graphql')
