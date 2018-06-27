@@ -117,7 +117,7 @@ app.use('/graphql', (req,res,next)=>{
     graphiql: true
 }));
 
-app.use(express.static('react-graphql/build'));
+app.use(express.static(path.join(__dirname, 'react-graphql/build')));
 
 
 let port = process.env.PORT || 5000;
