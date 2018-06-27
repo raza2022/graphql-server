@@ -103,8 +103,8 @@ app.use('/graphql', (req,res,next)=>{
 
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'content-type, authorization, content-length, x-requested-with, accept, origin');
-    res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-    res.header('Allow', 'POST, GET, OPTIONS')
+    res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.header('Allow', 'POST, GET, OPTIONS');
     res.header('Access-Control-Allow-Origin', '*');
     if (req.method === 'OPTIONS') {
         res.sendStatus(200);
@@ -115,10 +115,13 @@ app.use('/graphql', (req,res,next)=>{
     schema,
     rootValue,
     graphiql: true
-}))
+}));
 
-app.use(express.static(path.join(__dirname, 'react-graphql/build')));
+app.use(express.static('react-graphql/build'));
 
-app.listen(5000, () => {
+
+let port = process.env.PORT || 5000;
+
+app.listen(port, () => {
     console.log('server running on port 5000/graphql')
-})
+});
