@@ -92,6 +92,8 @@ let rootValue = {
 
 let app = express();
 
+app.use(express.static(path.join(__dirname, 'react-graphql/build')));
+
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -116,8 +118,6 @@ app.use('/graphql', (req,res,next)=>{
     rootValue,
     graphiql: true
 }));
-
-app.use(express.static(path.join(__dirname, 'react-graphql/build')));
 
 
 let port = process.env.PORT || 5000;
