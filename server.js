@@ -1,5 +1,6 @@
-let express = require('express');
-let expressGraphQL = require('express-graphql');
+const express = require('express');
+const expressGraphQL = require('express-graphql');
+const cors = require('cors');
 
 let { buildSchema } = require('graphql');
 
@@ -62,6 +63,10 @@ let getCourses = (args) => {
     return coursesData.filter((course) => course.filter === topic)
 };
 
+let getAllCourses = () => {
+    return coursesData
+};
+
 let updateCourseTopic = function({id, topic}) {
     coursesData.map(course => {
         if (course.id === id) {
@@ -75,13 +80,33 @@ let updateCourseTopic = function({id, topic}) {
 //GraphQl resolver
 let rootValue = {
     course: getCourse,
-    courses: getCourse,
+    courses: getCourses,
+    getAllCourses: getAllCourses,
     updateCourseTopic: updateCourseTopic
 };
 
 let app = express();
 
-app.use('/graphql', expressGraphQL({
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+app.use('/graphql', (req,res,next)=>{
+
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Headers', 'content-type, authorization, content-length, x-requested-with, accept, origin');
+    res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    res.header('Allow', 'POST, GET, OPTIONS')
+    res.header('Access-Control-Allow-Origin', '*');
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+}, expressGraphQL({
     schema,
     rootValue,
     graphiql: true
